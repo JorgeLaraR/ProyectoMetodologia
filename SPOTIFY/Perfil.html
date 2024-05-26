@@ -18,7 +18,12 @@
       <div class="perfil-usuario-header">
         <div class="perfil-usuario-portada">
           <div class="perfil-usuario-avatar">
-            <img src="./img/Perfil/1.jpg" alt="img-perfil" />
+            <img src="" alt="img-perfil" />
+            <form id="uploadForm" enctype="multipart/form-data">
+              <input type="file" name="profileImage" id="profileImage" />
+              <button type="submit">Subir Imagen</button>
+            </form>
+
             <button type="button" class="boton-avatar">
               <i class="far fa-image"></i>
             </button>
@@ -82,5 +87,37 @@
         <a target="_blank" href="https://open.spotify.com/intl-es">Spotify</a>
       </div>
     </div>
+
+    <!-- Agrega esta línea -->
+    <script src="./js/perfil/perfil.js"></script>
   </body>
 </html>
+<script>
+  document
+    .getElementById("uploadForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData();
+      const imageFile = document.getElementById("profileImage").files[0];
+      formData.append("profileImage", imageFile);
+
+      fetch("/uploadProfileImage", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            // Actualiza la imagen de perfil en la página
+            document.querySelector(".perfil-usuario-avatar img").src =
+              data.filePath; // Aquí se actualiza la ruta de la imagen
+          } else {
+            alert("Error al subir la imagen");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+</script>
