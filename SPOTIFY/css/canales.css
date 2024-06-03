@@ -461,3 +461,11 @@ body {
 .link-1 {
 	color: #ffffff;
 }
+
+div {
+	border-radius: 100px;
+}
+
+img {
+    margin-bottom: -5px;
+}
